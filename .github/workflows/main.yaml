@@ -1,0 +1,40 @@
+#
+# Copyright 2026 Hewlett Packard Enterprise Development LP
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+
+name: Main
+
+on:
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  Main:
+    name: Main
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout OSS-Fuzz
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          repository: google/oss-fuzz
+          fetch-depth: 1
+          path: oss-fuzz
+      - name: Checkout OSS-Fuzz-DAOS
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 1
+          path: oss-fuzz-daos
+      - name: Copy the projects/daos directory to oss-fuzz
+        run: oss-fuzz-daos/.github/workflows/sync.sh oss-fuzz
+      - name: Build the image
+        working-directory: oss-fuzz
+        run: sudo -E python3 infra/helper.py build_image daos
