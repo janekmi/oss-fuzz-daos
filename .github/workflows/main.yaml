@@ -38,3 +38,6 @@ jobs:
       - name: Build the image
         working-directory: oss-fuzz
         run: sudo python3 infra/helper.py build_image daos --pull
+      - name: Build targets (--sanitizer address)
+        working-directory: oss-fuzz
+        run: sudo python3 infra/helper.py build_fuzzers --sanitizer address daos

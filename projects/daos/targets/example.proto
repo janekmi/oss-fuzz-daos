@@ -1,0 +1,14 @@
+//
+// Copyright 2026 Hewlett Packard Enterprise Development LP
+//
+// SPDX-License-Identifier: BSD-2-Clause-Patent
+//
+
+syntax = "proto3";
+package example;
+
+message Msg {
+  float a = 1;
+  uint64 b = 2;
+  string c = 3;
+}

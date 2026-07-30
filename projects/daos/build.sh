@@ -9,6 +9,12 @@
 
 set -euo pipefail
 
-LPM_SRC_DIR=/home/michalsk/work/google/libprotobuf-mutator
+cd targets
 
+# generate C++ code from protobuf definitions
+mkdir -p gen
+protoc --cpp_out=gen example.proto
+
+# build targets
+LPM_SRC_DIR=../libprotobuf-mutator
 make EXTRA_INCLUDES="-I$LPM_SRC_DIR" LPM_SRC_DIR=$LPM_SRC_DIR ${1:-}
