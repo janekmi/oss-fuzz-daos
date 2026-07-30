@@ -4,7 +4,11 @@
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
-# Syncs DAOS fuzz projects into an OSS-Fuzz checkout.
+# Build DAOS fuzz targets.
 #
 
 set -euo pipefail
+
+LPM_SRC_DIR=/home/michalsk/work/google/libprotobuf-mutator
+
+make EXTRA_INCLUDES="-I$LPM_SRC_DIR" LPM_SRC_DIR=$LPM_SRC_DIR ${1:-}
