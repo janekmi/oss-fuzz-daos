@@ -16,5 +16,5 @@ mkdir -p gen
 protoc --cpp_out=gen example.proto
 
 # build targets
-LPM_SRC_DIR=../libprotobuf-mutator
+LPM_SRC_DIR=${LPM_SRC_DIR:-../libprotobuf-mutator}
 make EXTRA_INCLUDES="-I$LPM_SRC_DIR" LPM_SRC_DIR=$LPM_SRC_DIR ${1:-}
