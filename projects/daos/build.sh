@@ -17,11 +17,13 @@ protoc --cpp_out=gen example.proto
 
 # build targets
 CC=${CC:-clang}
-CFLAGS=${CFLAGS:-"-std=c++17 -Wall -Wextra -fsanitize=fuzzer-no-link"}
+CFLAGS=${CFLAGS:-"-Wall -Wextra -fsanitize=fuzzer-no-link -Wno-pointer-arith -Wint-conversion -D_GNU_SOURCE"}
 LPM_SRC_DIR=${LPM_SRC_DIR:-../libprotobuf-mutator}
+DAOS_SRC_DIR=${DAOS_SRC_DIR:-../daos/src}
 
 make \
     CC="$CC" \
     CFLAGS="$CFLAGS" \
-    INCLUDES="-I$LPM_SRC_DIR" \
-    LPM_SRC_DIR=$LPM_SRC_DIR ${1:-}
+    LPM_SRC_DIR="$LPM_SRC_DIR" \
+    DAOS_SRC_DIR="$DAOS_SRC_DIR" \
+    ${1:-}
