@@ -16,5 +16,12 @@ mkdir -p gen
 protoc --cpp_out=gen example.proto
 
 # build targets
+CC=${CC:-clang}
+CFLAGS=${CFLAGS:-"-std=c++17 -Wall -Wextra -fsanitize=fuzzer-no-link"}
 LPM_SRC_DIR=${LPM_SRC_DIR:-../libprotobuf-mutator}
-make EXTRA_INCLUDES="-I$LPM_SRC_DIR" LPM_SRC_DIR=$LPM_SRC_DIR ${1:-}
+
+make \
+    CC="$CC" \
+    CFLAGS="$CFLAGS" \
+    INCLUDES="-I$LPM_SRC_DIR" \
+    LPM_SRC_DIR=$LPM_SRC_DIR ${1:-}
