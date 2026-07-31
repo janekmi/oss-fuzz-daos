@@ -16,16 +16,11 @@ SRCS := target_btree.cc \
         $(LPM_SRC_DIR)/src/mutator.cc \
         $(LPM_SRC_DIR)/src/utf8_fix.cc \
         target_btree_helpers.c \
+        mocks.c \
         $(DAOS_SRC_DIR)/common/btree.c \
-        $(DAOS_SRC_DIR)/common/fail_loc.c \
-        $(DAOS_SRC_DIR)/common/tests/utest_common.c \
         $(DAOS_SRC_DIR)/common/mem.c \
-        $(DAOS_SRC_DIR)/gurt/dlog.c \
-        $(DAOS_SRC_DIR)/gurt/debug.c \
-        $(DAOS_SRC_DIR)/gurt/fault_inject.c \
-        $(DAOS_SRC_DIR)/gurt/errno.c \
-        $(DAOS_SRC_DIR)/gurt/hash.c \
-        $(DAOS_SRC_DIR)/gurt/misc.c
+        $(DAOS_SRC_DIR)/common/tests/utest_common.c
+
 OBJS := $(patsubst %.cc,%.o,$(patsubst %.c,%.o,$(SRCS)))
 TARGET := target_btree
 
