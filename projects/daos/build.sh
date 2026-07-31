@@ -13,7 +13,7 @@ cd targets
 
 # generate C++ code from protobuf definitions
 mkdir -p gen
-protoc --cpp_out=gen example.proto
+protoc --cpp_out=gen target_btree.proto
 
 # build targets
 CC=${CC:-clang}

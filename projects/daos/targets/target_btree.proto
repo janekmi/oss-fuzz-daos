@@ -5,7 +5,7 @@
 //
 
 syntax = "proto3";
-package example;
+package target_btree;
 
 message Msg {
   float a = 1;

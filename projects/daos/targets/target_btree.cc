@@ -7,14 +7,14 @@
 #include <syslog.h>
 #include <src/libfuzzer/libfuzzer_macro.h>
 
-#include "gen/example.pb.h"
+#include "gen/target_btree.pb.h"
 
 extern "C" {
 #include <stdint.h>
 void daos_fuzz_btree(double a, uint64_t b);
 }
 
-DEFINE_PROTO_FUZZER(const example::Msg& input) {
+DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
 	syslog(LOG_INFO, "a: %f, b: %lu", input.a(), input.b());
 	daos_fuzz_btree(input.a(), input.b());
 	if (input.a() > 1) {

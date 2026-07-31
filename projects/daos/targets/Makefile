@@ -7,8 +7,8 @@
 INCLUDES := -I$(LPM_SRC_DIR) -I$(DAOS_SRC_DIR)/include
 LDFLAGS := -v -fsanitize=fuzzer -lprotobuf -luuid
 
-SRCS := target.cc \
-        gen/example.pb.cc \
+SRCS := target_btree.cc \
+        gen/target_btree.pb.cc \
         $(LPM_SRC_DIR)/src/libfuzzer/libfuzzer_macro.cc \
         $(LPM_SRC_DIR)/src/libfuzzer/libfuzzer_mutator.cc \
         $(LPM_SRC_DIR)/src/binary_format.cc \
