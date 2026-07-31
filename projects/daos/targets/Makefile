@@ -15,7 +15,7 @@ SRCS := target_btree.cc \
         $(LPM_SRC_DIR)/src/text_format.cc \
         $(LPM_SRC_DIR)/src/mutator.cc \
         $(LPM_SRC_DIR)/src/utf8_fix.cc \
-        daos_helpers.c \
+        target_btree_helpers.c \
         $(DAOS_SRC_DIR)/common/btree.c \
         $(DAOS_SRC_DIR)/common/fail_loc.c \
         $(DAOS_SRC_DIR)/common/mem.c \
