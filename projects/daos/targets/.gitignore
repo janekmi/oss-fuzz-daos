@@ -1,4 +1,4 @@
 gen
 *.o
-target_[^.]*
+target_btree
 crash-*
