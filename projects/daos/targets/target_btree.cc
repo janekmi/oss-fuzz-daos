@@ -10,11 +10,16 @@
 #include "gen/target_btree.pb.h"
 
 extern "C" {
-#include <stdint.h>
-void daos_fuzz_btree(double a, uint64_t b);
+#include "target_btree_helpers.h"
 }
 
 DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
+	static int a = 0;
+	if (a == 0) {
+		tb_init();
+		a++;
+	}
+
 	syslog(LOG_INFO, "a: %f, b: %lu", input.a(), input.b());
 	daos_fuzz_btree(input.a(), input.b());
 	if (input.a() > 1) {
