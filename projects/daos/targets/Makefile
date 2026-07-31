@@ -26,7 +26,7 @@ SRCS := target_btree.cc \
         $(DAOS_SRC_DIR)/gurt/hash.c \
         $(DAOS_SRC_DIR)/gurt/misc.c
 OBJS := $(patsubst %.cc,%.o,$(patsubst %.c,%.o,$(SRCS)))
-TARGET := target
+TARGET := target_btree
 
 .PHONY: all clean
 
