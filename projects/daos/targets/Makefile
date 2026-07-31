@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 
-INCLUDES := -I$(LPM_SRC_DIR) -I$(DAOS_SRC_DIR)/include
+INCLUDES := -I$(LPM_SRC_DIR) -I$(DAOS_SRC_DIR)/include -I$(DAOS_SRC_DIR)/common/tests
 LDFLAGS := -v -fsanitize=fuzzer -lprotobuf -luuid
 
 SRCS := target_btree.cc \
@@ -18,6 +18,7 @@ SRCS := target_btree.cc \
         target_btree_helpers.c \
         $(DAOS_SRC_DIR)/common/btree.c \
         $(DAOS_SRC_DIR)/common/fail_loc.c \
+        $(DAOS_SRC_DIR)/common/tests/utest_common.c \
         $(DAOS_SRC_DIR)/common/mem.c \
         $(DAOS_SRC_DIR)/gurt/dlog.c \
         $(DAOS_SRC_DIR)/gurt/debug.c \

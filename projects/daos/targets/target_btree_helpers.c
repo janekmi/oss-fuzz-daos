@@ -9,15 +9,19 @@
 #include <daos/btree.h>
 
 #include "target_btree_helpers.h"
+#include "utest_common.h"
 
 int daos_tree_logfac_cache[24];
 int daos_tests_logfac_cache[24];
 int daos_common_logfac_cache[24];
+int daos_daos_logfac_cache[24];
 int daos_tree_logfac;
 int daos_tests_logfac;
 int daos_common_logfac;
+int daos_daos_logfac;
 
-struct utest_context *ik_utx;
+static struct utest_context *ik_utx;
+static struct btr_root *ik_root;
 
 struct ik_rec {
 	uint64_t	ir_key;
@@ -94,8 +98,8 @@ ik_rec_free(struct btr_instance *tins, struct btr_record *rec, void *args)
 		*rec_ret	= rec->rec_off;
 		return 0;
 	}
-	// utest_free(ik_utx, irec->ir_val_off);
-	// utest_free(ik_utx, rec->rec_off);
+	utest_free(ik_utx, irec->ir_val_off);
+	utest_free(ik_utx, rec->rec_off);
 
 	return 0;
 }
@@ -229,13 +233,14 @@ tb_init(void)
 	/* dynamic_flag */
 	rc = dbtree_class_register(IK_TREE_CLASS, BTR_FEAT_EMBED_FIRST | BTR_FEAT_UINT_KEY, &ik_ops);
 	D_ASSERT(rc == 0);
+	
+	rc = utest_vmem_create(sizeof(*ik_root), &ik_utx);
+	D_ASSERT(rc == 0);
 }
 
 void
 daos_fuzz_btree(double a, uint64_t b)
 {
-	struct btr_root ik_root = {};
-
 	(void)a;
 	(void)b;
 	(void)ik_root;
