@@ -8,7 +8,61 @@ syntax = "proto3";
 package target_btree;
 
 message Msg {
-  float a = 1;
-  uint64 b = 2;
-  string c = 3;
+  message CreateCmd {
+    uint64 opts = 1;
+    uint32 order = 2;
+  }
+
+  message CloseCmd {
+  }
+
+  message DestroyCmd {
+  }
+
+  message OpenCmd {
+  }
+
+  message UpdateCmd {
+    uint64 entries_num = 1;
+  }
+
+  message IterCmd {
+    uint64 entries_num = 1;
+  }
+
+  message QueryCmd {
+  }
+
+  message LookupCmd {
+    uint64 entries_num = 1;
+  }
+
+  message LookupCmd {
+    uint64 entries_num = 1;
+  }
+
+  message DeleteCmd {
+    uint64 entries_num = 1;
+  }
+
+  message DrainCmd {
+    uint64 credits_num = 1;
+  }
+
+  message Command {
+    oneof cmd {
+      CreateCmd create = 1;
+      OpenCmd open = 2;
+      CloseCmd close = 3;
+      DestroyCmd destroy = 4;
+      UpdateCmd update = 5;
+      IterCmd iter = 6;
+      QueryCmd query = 7;
+      LookupCmd lookup = 8;
+      DeleteCmd delete = 9;
+      DrainCmd drain = 10;
+    }
+  }
+
+  repeated Command commands = 1;
 }
