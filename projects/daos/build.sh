@@ -12,8 +12,12 @@ set -euo pipefail
 cd targets
 
 # generate C++ code from protobuf definitions
-mkdir -p gen
-protoc --cpp_out=gen target_btree.proto
+if [ "x${1:-}" == "xclean" ]; then
+    rm -rf gen
+else
+    mkdir -p gen
+    protoc --cpp_out=gen target_btree.proto
+fi
 
 # build targets
 CC=${CC:-clang}
