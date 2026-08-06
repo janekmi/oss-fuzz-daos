@@ -18,6 +18,9 @@ struct utest_context *ik_utx;
 
 static struct btr_root *ik_root;
 static struct umem_attr *ik_uma;
+static bool ik_inplace;
+static daos_handle_t ik_toh = DAOS_HDL_INVAL;
+static umem_off_t ik_root_off = UMOFF_NULL;
 
 void
 tb_init(void)
@@ -32,4 +35,38 @@ tb_init(void)
 	D_ASSERT(rc == 0);
 	ik_root = utest_utx2root(ik_utx);
 	ik_uma = utest_utx2uma(ik_utx);
+}
+
+void
+tb_create_cmd(bool feat_uint_key, bool feat_embed_first, bool inplace, uint32_t order)
+{
+	uint64_t feats = 0;
+	int rc;
+	int      rc_exp = 0;
+
+	if (feat_uint_key) {
+		feats += BTR_FEAT_UINT_KEY;
+	}
+	if (feat_embed_first) {
+		feats += BTR_FEAT_EMBED_FIRST;
+	}
+
+	if (order == 0){
+		order = IK_ORDER_DEF;
+	}
+
+	ik_inplace = inplace;
+
+	/* If the tree is already there */
+	if (daos_handle_is_valid(ik_toh)) {
+		rc_exp = -DER_NO_PERM;
+	}
+
+	if (ik_inplace) {
+		rc = dbtree_create_inplace(IK_TREE_CLASS, feats, order, ik_uma, ik_root, &ik_toh);
+	} else {
+		rc = dbtree_create(IK_TREE_CLASS, feats, order, ik_uma, &ik_root_off, &ik_toh);
+	}
+
+	assert(rc == rc_exp);
 }

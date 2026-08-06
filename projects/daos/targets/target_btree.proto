@@ -9,8 +9,10 @@ package target_btree;
 
 message Msg {
   message CreateCmd {
-    uint64 opts = 1;
-    uint32 order = 2;
+    bool feat_uint_key = 1;
+    bool feat_embed_first = 2;
+    bool inplace = 3;
+    uint32 order = 4;
   }
 
   message CloseCmd {

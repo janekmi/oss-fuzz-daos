@@ -3,4 +3,6 @@
 
 #define IK_TREE_CLASS 100
 
+#define IK_ORDER_DEF 16
+
 #endif /** TARGET_BTREE_IK_TREE_H */
