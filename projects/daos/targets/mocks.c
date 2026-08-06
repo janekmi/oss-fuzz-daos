@@ -6,6 +6,15 @@
 
 #include <daos/btree.h>
 
+int daos_tree_logfac_cache[24];
+int daos_tests_logfac_cache[24];
+int daos_common_logfac_cache[24];
+int daos_daos_logfac_cache[24];
+int daos_tree_logfac;
+int daos_tests_logfac;
+int daos_common_logfac;
+int daos_daos_logfac;
+
 /* An alternative assert function. Set with d_register_alt_assert() */
 void (*d_alt_assert)(const int, const char*, const char*, const int);
 

@@ -1,0 +1,6 @@
+#ifndef TARGET_BTREE_IK_TREE_H
+#define TARGET_BTREE_IK_TREE_H
+
+#define IK_TREE_CLASS 100
+
+#endif /** TARGET_BTREE_IK_TREE_H */

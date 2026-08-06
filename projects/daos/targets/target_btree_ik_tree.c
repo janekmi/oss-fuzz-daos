@@ -8,21 +8,11 @@
 
 #include <daos/btree.h>
 
-#include "target_btree_helpers.h"
+#include "target_btree_ik_tree.h"
+#include "target_btree_ops.h"
 #include "utest_common.h"
 
-int daos_tree_logfac_cache[24];
-int daos_tests_logfac_cache[24];
-int daos_common_logfac_cache[24];
-int daos_daos_logfac_cache[24];
-int daos_tree_logfac;
-int daos_tests_logfac;
-int daos_common_logfac;
-int daos_daos_logfac;
-
-static struct utest_context *ik_utx;
-static struct btr_root *ik_root;
-static struct umem_attr *ik_uma;
+extern struct utest_context *ik_utx;
 
 struct ik_rec {
 	uint64_t	ir_key;
@@ -212,7 +202,7 @@ ik_rec_stat(struct btr_instance *tins, struct btr_record *rec,
 	return 0;
 }
 
-static btr_ops_t ik_ops = {
+btr_ops_t ik_ops = {
     .to_hkey_size  = ik_hkey_size,
     .to_hkey_gen   = ik_hkey_gen,
     .to_key_cmp    = ik_key_cmp,
@@ -223,30 +213,3 @@ static btr_ops_t ik_ops = {
     .to_rec_string = ik_rec_string,
     .to_rec_stat   = ik_rec_stat,
 };
-
-#define IK_TREE_CLASS 100
-
-void
-tb_init(void)
-{
-	int rc;
-
-	/* dynamic_flag */
-	rc = dbtree_class_register(IK_TREE_CLASS, BTR_FEAT_EMBED_FIRST | BTR_FEAT_UINT_KEY, &ik_ops);
-	D_ASSERT(rc == 0);
-	
-	rc = utest_vmem_create(sizeof(*ik_root), &ik_utx);
-	D_ASSERT(rc == 0);
-	ik_root = utest_utx2root(ik_utx);
-	ik_uma = utest_utx2uma(ik_utx);
-}
-
-void
-daos_fuzz_btree(double a, uint64_t b)
-{
-	(void)a;
-	(void)b;
-	(void)ik_root;
-
-        abort();
-}

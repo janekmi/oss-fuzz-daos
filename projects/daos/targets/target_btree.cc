@@ -10,7 +10,7 @@
 #include "gen/target_btree.pb.h"
 
 extern "C" {
-#include "target_btree_helpers.h"
+#include "target_btree_ops.h"
 }
 
 DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
@@ -30,18 +30,15 @@ DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
 		switch (cmd.cmd_case()) {
 		case target_btree::Msg_Command::kCreate: {
 			const auto& c = cmd.create();
-			syslog(LOG_INFO, "Create: tree_class=%u feats=%lu order=%u",
-			       c.tree_class(), c.feats(), c.order());
+			syslog(LOG_INFO, "Create: opts=%lu order=%u", c.opts(), c.order());
 			break;
 		}
 		case target_btree::Msg_Command::kOpen: {
-			const auto& c = cmd.open();
-			syslog(LOG_INFO, "Open: handle=%u", c.handle());
+			syslog(LOG_INFO, "Open");
 			break;
 		}
 		case target_btree::Msg_Command::kClose: {
-			const auto& c = cmd.close();
-			syslog(LOG_INFO, "Close: handle=%u", c.handle());
+			syslog(LOG_INFO, "Close");
 			break;
 		}
 		case target_btree::Msg_Command::kDestroy: {

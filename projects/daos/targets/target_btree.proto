@@ -37,10 +37,6 @@ message Msg {
     uint64 entries_num = 1;
   }
 
-  message LookupCmd {
-    uint64 entries_num = 1;
-  }
-
   message DeleteCmd {
     uint64 entries_num = 1;
   }
