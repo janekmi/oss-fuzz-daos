@@ -70,3 +70,14 @@ tb_create_cmd(bool feat_uint_key, bool feat_embed_first, bool inplace, uint32_t 
 
 	assert(rc == rc_exp);
 }
+
+void
+tb_close_cmd()
+{
+	int rc_exp = daos_handle_is_valid(ik_toh) ? 0 : -DER_NO_HDL;
+	int rc = dbtree_close(ik_toh);
+	assert(rc == rc_exp);
+	if (rc_exp == 0) {
+		ik_toh = DAOS_HDL_INVAL;
+	}
+}

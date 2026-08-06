@@ -41,6 +41,7 @@ DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
 		}
 		case target_btree::Msg_Command::kClose: {
 			syslog(LOG_INFO, "Close");
+			tb_close_cmd();
 			break;
 		}
 		case target_btree::Msg_Command::kDestroy: {
