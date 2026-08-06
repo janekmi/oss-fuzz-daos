@@ -22,6 +22,7 @@ int daos_daos_logfac;
 
 static struct utest_context *ik_utx;
 static struct btr_root *ik_root;
+static struct umem_attr *ik_uma;
 
 struct ik_rec {
 	uint64_t	ir_key;
@@ -236,6 +237,8 @@ tb_init(void)
 	
 	rc = utest_vmem_create(sizeof(*ik_root), &ik_utx);
 	D_ASSERT(rc == 0);
+	ik_root = utest_utx2root(ik_utx);
+	ik_uma = utest_utx2uma(ik_utx);
 }
 
 void
