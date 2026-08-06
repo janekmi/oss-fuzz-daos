@@ -17,7 +17,7 @@ protoc --cpp_out=gen target_btree.proto
 
 # build targets
 CC=${CC:-clang}
-CFLAGS=${CFLAGS:-"-Wall -Wextra -fsanitize=fuzzer-no-link -Wno-pointer-arith -Wint-conversion -D_GNU_SOURCE"}
+CFLAGS=${CFLAGS:-"-O0 -ggdb -Wall -Wextra -fsanitize=fuzzer-no-link -Wno-pointer-arith -Wint-conversion -D_GNU_SOURCE"}
 LPM_SRC_DIR=${LPM_SRC_DIR:-../libprotobuf-mutator}
 DAOS_SRC_DIR=${DAOS_SRC_DIR:-../daos/src}
 
