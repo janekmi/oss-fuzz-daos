@@ -81,3 +81,39 @@ tb_close_cmd()
 		ik_toh = DAOS_HDL_INVAL;
 	}
 }
+
+void
+tb_destroy_cmd()
+{
+	int rc_exp = daos_handle_is_valid(ik_toh) ? 0 : -DER_NO_HDL;
+	int rc = dbtree_destroy(ik_toh, NULL);
+	assert(rc == rc_exp);
+	if (rc_exp == 0) {
+		ik_toh = DAOS_HDL_INVAL;
+	}
+}
+
+void
+tb_open_cmd()
+{
+	int rc;
+
+	/* dbtree_open*() has no safeguards. */
+	if (daos_handle_is_valid(ik_toh)) {
+		return;
+	}
+
+	if (ik_inplace) {
+		rc = dbtree_open_inplace(ik_root, ik_uma, &ik_toh);
+	} else {
+		rc = dbtree_open(ik_root_off, ik_uma, &ik_toh);
+	}
+
+	assert(rc == 0);
+}
+
+void
+tb_update_cmd()
+{
+
+}

@@ -35,10 +35,6 @@ DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
 			tb_create_cmd(c.feat_uint_key(), c.feat_embed_first(), c.inplace(), c.order());
 			break;
 		}
-		case target_btree::Msg_Command::kOpen: {
-			syslog(LOG_INFO, "Open");
-			break;
-		}
 		case target_btree::Msg_Command::kClose: {
 			syslog(LOG_INFO, "Close");
 			tb_close_cmd();
@@ -46,6 +42,12 @@ DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
 		}
 		case target_btree::Msg_Command::kDestroy: {
 			syslog(LOG_INFO, "Destroy");
+			tb_destroy_cmd();
+			break;
+		}
+		case target_btree::Msg_Command::kOpen: {
+			syslog(LOG_INFO, "Open");
+			tb_open_cmd();
 			break;
 		}
 		case target_btree::Msg_Command::kUpdate: {
