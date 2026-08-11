@@ -1,3 +1,5 @@
 gen
 *.o
+*.o.repro
 target_btree
+target_btree_repro

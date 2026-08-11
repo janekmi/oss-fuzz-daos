@@ -4,6 +4,8 @@
 // SPDX-License-Identifier: BSD-2-Clause-Patent
 //
 
+#include <fstream>
+#include <sstream>
 #include <syslog.h>
 #include <src/libfuzzer/libfuzzer_macro.h>
 
@@ -13,17 +15,11 @@ extern "C" {
 #include "target_btree_ops.h"
 }
 
-DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
-	static bool init_done = 0;
-	if (!init_done) {
-		tb_init();
-		init_done = true;
-	}
-
-	// Print the number of commands in the input message
+static void
+tb_run(const target_btree::Msg& input)
+{
 	syslog(LOG_INFO, "Number of commands: %d\n", input.commands_size());
 
-	// Loop over messages and print arguments of each of the commands
 	for (int i = 0; i < input.commands_size(); i++) {
 		const target_btree::Msg_Command& cmd = input.commands(i);
 
@@ -91,8 +87,45 @@ DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
 			break;
 		}
 	}
-
-	if (input.commands_size() > 0) {
-		abort();
-	}
 }
+
+#ifndef REPRO_BINARY
+DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
+	static bool init_done = 0;
+	if (!init_done) {
+		tb_init();
+		init_done = true;
+	}
+
+	tb_run(input);
+}
+#else
+int
+main(int argc, char *argv[])
+{
+	if (argc != 2) {
+		std::cerr << "Usage: " << argv[0] << " <path-to-crash-file>\n";
+		return 1;
+	}
+
+	std::ifstream file(argv[1]);
+	if (!file) {
+		std::cerr << "Failed to open file: " << argv[1] << "\n";
+		return 1;
+	}
+
+	std::ostringstream buf;
+	buf << file.rdbuf();
+
+	target_btree::Msg input;
+	if (!google::protobuf::TextFormat::ParseFromString(buf.str(), &input)) {
+		std::cerr << "Failed to parse protobuf message from file: " << argv[1] << "\n";
+		return 1;
+	}
+
+	tb_init();
+	tb_run(input);
+
+	return 0;
+}
+#endif /** REPRO_BINARY */
