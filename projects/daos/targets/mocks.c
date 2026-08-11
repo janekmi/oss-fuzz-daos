@@ -77,7 +77,7 @@ d_should_fail(struct d_fault_attr_t *fault_attr)
 int
 daos_fail_check(uint64_t fail_loc)
 {
-	abort();
+	return false;
 }
 
 d_dbug_t DB_MEM;
