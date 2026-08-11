@@ -364,3 +364,23 @@ tb_delete_cmd(uint32_t entries_num) {
 		}
 	}
 }
+
+void
+tb_drain_cmd(uint32_t credits)
+{
+	int credits_arg = credits;
+	bool destroyed = false;
+	int rc;
+	int  rc_exp    = 0;
+
+	if (daos_handle_is_inval(ik_toh)) {
+		rc_exp = -DER_NO_HDL;
+	}
+
+	rc = dbtree_drain(ik_toh, &credits_arg, NULL, &destroyed);
+	assert(rc == rc_exp);
+
+	if (destroyed) {
+		ik_toh = DAOS_HDL_INVAL;
+	}
+}

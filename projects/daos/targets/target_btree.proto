@@ -44,7 +44,7 @@ message Msg {
   }
 
   message DrainCmd {
-    uint64 credits_num = 1;
+    uint32 credits_num = 1;
   }
 
   message Command {

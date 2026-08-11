@@ -81,7 +81,8 @@ DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
 		}
 		case target_btree::Msg_Command::kDrain: {
 			const auto& c = cmd.drain();
-			syslog(LOG_INFO, "Drain: credits_num=%lu", c.credits_num());
+			syslog(LOG_INFO, "Drain: credits_num=%u", c.credits_num());
+			tb_drain_cmd(c.credits_num());
 			break;
 		}
 		default:
