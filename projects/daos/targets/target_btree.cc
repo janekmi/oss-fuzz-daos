@@ -75,7 +75,8 @@ DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
 		}
 		case target_btree::Msg_Command::kDelete: {
 			const auto& c = cmd.delete_();
-			syslog(LOG_INFO, "Delete: entries_num=%lu", c.entries_num());
+			syslog(LOG_INFO, "Delete: entries_num=%u", c.entries_num());
+			tb_delete_cmd(c.entries_num());
 			break;
 		}
 		case target_btree::Msg_Command::kDrain: {

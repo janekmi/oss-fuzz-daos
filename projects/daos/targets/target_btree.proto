@@ -40,7 +40,7 @@ message Msg {
   }
 
   message DeleteCmd {
-    uint64 entries_num = 1;
+    uint32 entries_num = 1;
   }
 
   message DrainCmd {

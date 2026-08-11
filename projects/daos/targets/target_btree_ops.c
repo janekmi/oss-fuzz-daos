@@ -323,3 +323,44 @@ tb_lookup_cmd(uint32_t entries_num) {
 		}
 	}
 }
+
+void
+tb_delete_cmd(uint32_t entries_num) {
+	const int use_random_chance = 20;
+	d_iov_t	key_iov;
+	uint64_t  key;
+	int rc;
+	int       rc_exp = -1;
+	int       idx    = -1;
+	for (uint32_t i = 0; i < entries_num; ++i) {
+		bool use_random = ((rand() % 100) < use_random_chance);
+		if (records_used == 0 || use_random) {
+			key = rand();
+			if (record_get(key) == NULL) {
+				// printf("Delete an non-existing: %lu\n", key);
+				rc_exp = -DER_NONEXIST;
+			} else {
+				// printf("Delete an existing: %lu\n", key);
+				rc_exp = 0;
+			}
+		} else {
+			idx    = rand() % records_used;
+			key    = records[idx].key;
+			rc_exp = 0;
+			// printf("Lookup [%d]: %lu\n", idx, key);
+		}
+		/* overwrite the expected rc set above */
+		if (daos_handle_is_inval(ik_toh)) {
+			rc_exp = -DER_NO_HDL;
+		}
+		/* delete the entry */
+		d_iov_set(&key_iov, &key, sizeof(key));
+		rc = dbtree_delete(ik_toh, BTR_PROBE_EQ, &key_iov, NULL);
+		assert(rc == rc_exp);
+		/* XXX other probes? */
+		if (rc_exp == 0) {
+			/* delete from the records */
+			record_delete(0, idx);
+		}
+	}
+}
