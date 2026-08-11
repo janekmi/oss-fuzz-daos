@@ -137,7 +137,7 @@ tb_update_cmd(uint32_t entries_num)
 
 	entries_num = entries_num % TB_UPDATE_ENTRIES_MAX + 1;
 
-	for (int i = 0; i < entries_num; ++i) {
+	for (uint32_t i = 0; i < entries_num; ++i) {
 		// if possible give a chance to use an existing key
 		bool use_existing = ((rand() % 100) < use_existing_chance);
 		if (records_used == 0) {
@@ -158,4 +158,111 @@ tb_update_cmd(uint32_t entries_num)
 		rc = dbtree_update(ik_toh, &key_iov, &val_iov);
 		assert(rc == 0);
 	}
+}
+
+static int
+op_iter_probe_rand(daos_handle_t ih) {
+	// if (records_used == 0) {
+	// 	return -DER_NONEXIST;
+	// }
+	dbtree_probe_opc_t opc = BTR_PROBE_FIRST;
+	int idx;
+	d_iov_t	key_iov;
+	d_iov_t	*key_iovp = NULL;
+	int rc;
+	int                rc_exp = 0;
+	switch (rand() % 3) {
+	case 0:
+		opc = BTR_PROBE_FIRST;
+		break;
+	case 1:
+		opc = BTR_PROBE_LAST;
+		break;
+	case 2:
+		opc = BTR_PROBE_EQ;
+		break;
+		/* XXX: Probes? */
+	}
+	if (opc == BTR_PROBE_EQ) {
+		if (records_used > 0) {
+			idx = rand() % records_used;
+			d_iov_set(&key_iov, &records[idx].key, sizeof(records[idx].key));
+			key_iovp = &key_iov;
+		} else {
+			opc = BTR_PROBE_FIRST; /* fall back */
+		}
+	}
+	if (records_used == 0) {
+		rc_exp = -DER_NONEXIST;
+	}
+	/* XXX: Other intents? */
+	/* XXX: Anchors? */
+	rc = dbtree_iter_probe(ih, opc, DAOS_INTENT_DEFAULT, key_iovp, NULL);
+	assert(rc == rc_exp);
+	return rc;
+}
+
+void
+tb_iter_cmd(uint32_t entries_num) {
+	daos_handle_t ih;
+	d_iov_t	key_iov;
+	d_iov_t	val_iov;
+	int rc;
+
+	if (!daos_handle_is_valid(ik_toh)) {
+		uint64_t blob = rand();
+		d_iov_set(&key_iov, &blob, sizeof(blob));
+		d_iov_set(&val_iov, &blob, sizeof(blob));
+		rc = dbtree_update(ik_toh, &key_iov, &val_iov);
+		assert(rc == -DER_NO_HDL);
+		return;
+	}
+
+	rc = dbtree_iter_prepare(ik_toh, BTR_ITER_EMBEDDED, &ih);
+	assert(rc == 0);
+	if (op_iter_probe_rand(ih) != 0) {
+		return;
+	}
+	int  steps_num = entries_num;
+	bool prev;
+	for (int i = 0; i < steps_num; ++i) {
+		int steps_remaining = steps_num - i;
+		if (rand() % 2 == 0) {
+			/* fetch and check the value is as expected */
+			d_iov_set(&key_iov, NULL, 0);
+			d_iov_set(&val_iov, NULL, 0);
+			rc = dbtree_iter_fetch(ih, &key_iov, &val_iov, NULL);
+			assert(rc == 0);
+			record_check(*((uint64_t *)key_iov.iov_buf), (char *)val_iov.iov_buf,
+				     val_iov.iov_len);
+		}
+		if (rand() % steps_num > steps_remaining) {
+			/* fetch the key to remove it from the records */
+			d_iov_set(&key_iov, NULL, 0);
+			d_iov_set(&val_iov, NULL, 0);
+			rc = dbtree_iter_fetch(ih, &key_iov, &val_iov, NULL);
+			assert(rc == 0);
+			record_delete(*(uint64_t *)key_iov.iov_buf, RECORD_IDX_UNKNOWN);
+			/* delete the entry */
+			assert(dbtree_iter_delete(ih, NULL) == 0);
+			/* re-probe since after the delete the iterator is not ready */
+			if (op_iter_probe_rand(ih) != 0) {
+				return;
+			}
+		}
+		prev = rand() % 2;
+		if (prev) {
+			rc = dbtree_iter_prev(ih);
+		} else {
+			rc = dbtree_iter_next(ih);
+		}
+		assert(rc == 0 || rc == -DER_NONEXIST);
+		if (rc == -DER_NONEXIST) {
+			/* re-probe since after hitting a non-existing entry the iterator is not ready */
+			if (op_iter_probe_rand(ih) != 0) {
+				return;
+			}
+		}
+	}
+	dbtree_iter_finish(ih);
 }

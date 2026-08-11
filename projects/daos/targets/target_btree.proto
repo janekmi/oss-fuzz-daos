@@ -29,7 +29,7 @@ message Msg {
   }
 
   message IterCmd {
-    uint64 entries_num = 1;
+    uint32 entries_num = 1;
   }
 
   message QueryCmd {

@@ -59,6 +59,7 @@ DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
 		case target_btree::Msg_Command::kIter: {
 			const auto& c = cmd.iter();
 			syslog(LOG_INFO, "Iter: entries_num=%lu", c.entries_num());
+			tb_iter_cmd(c.entries_num());
 			break;
 		}
 		case target_btree::Msg_Command::kQuery: {
