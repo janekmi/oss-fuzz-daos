@@ -266,3 +266,18 @@ tb_iter_cmd(uint32_t entries_num) {
 	}
 	dbtree_iter_finish(ih);
 }
+
+void
+tb_query_cmd() {
+	struct btr_attr attr;
+	struct btr_stat stat;
+	int rc;
+	int             rc_exp = 0;
+
+	if (!daos_handle_is_valid(ik_toh)) {
+		rc_exp = -DER_NO_HDL;
+	}
+
+	rc = dbtree_query(ik_toh, &attr, &stat);
+	assert(rc == rc_exp);
+}

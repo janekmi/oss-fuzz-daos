@@ -64,6 +64,7 @@ DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
 		}
 		case target_btree::Msg_Command::kQuery: {
 			syslog(LOG_INFO, "Query");
+			tb_query_cmd();
 			break;
 		}
 		case target_btree::Msg_Command::kLookup: {
