@@ -85,14 +85,14 @@ DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
 			tb_drain_cmd(c.credits_num());
 			break;
 		}
+		case target_btree::Msg_Command::CMD_NOT_SET: {
+			syslog(LOG_INFO, "Command not set");
+			break;
+		}
 		default:
 			syslog(LOG_INFO, "Unknown command: cmd_case=%d", cmd.cmd_case());
 			abort();
 			break;
 		}
-	}
-
-	if (input.commands_size() > 0) {
-		abort();
 	}
 }

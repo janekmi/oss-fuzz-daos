@@ -23,6 +23,8 @@ static bool ik_inplace;
 static daos_handle_t ik_toh = DAOS_HDL_INVAL;
 static umem_off_t ik_root_off = UMOFF_NULL;
 
+static bool present = false;
+
 void
 tb_init(void)
 {
@@ -38,6 +40,8 @@ tb_init(void)
 	D_ASSERT(rc == 0);
 	ik_root = utest_utx2root(ik_utx);
 	ik_uma = utest_utx2uma(ik_utx);
+
+	present = false;
 }
 
 void
@@ -72,6 +76,9 @@ tb_create_cmd(bool feat_uint_key, bool feat_embed_first, bool inplace, uint32_t 
 	}
 
 	assert(rc == rc_exp);
+	if (rc == 0) {
+		present = true;
+	}
 }
 
 void
@@ -93,6 +100,7 @@ tb_destroy_cmd()
 	assert(rc == rc_exp);
 	if (rc_exp == 0) {
 		ik_toh = DAOS_HDL_INVAL;
+		present = false;
 	}
 }
 
@@ -100,6 +108,7 @@ void
 tb_open_cmd()
 {
 	int rc;
+	int rc_exp = present ? 0 : -DER_INVAL;
 
 	/* dbtree_open*() has no safeguards. */
 	if (daos_handle_is_valid(ik_toh)) {
@@ -112,7 +121,7 @@ tb_open_cmd()
 		rc = dbtree_open(ik_root_off, ik_uma, &ik_toh);
 	}
 
-	assert(rc == 0);
+	assert(rc == rc_exp);
 }
 
 #define TB_UPDATE_ENTRIES_MAX 30
