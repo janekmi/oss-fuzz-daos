@@ -18,6 +18,7 @@ SRCS := target_btree.cc \
         target_btree_ops.c \
         target_btree_ik_tree.c \
         mocks.c \
+        records.c \
         $(DAOS_SRC_DIR)/common/btree.c \
         $(DAOS_SRC_DIR)/common/mem.c \
         $(DAOS_SRC_DIR)/common/tests/utest_common.c

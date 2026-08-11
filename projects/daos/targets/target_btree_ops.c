@@ -10,6 +10,7 @@
 
 #include "target_btree_ops.h"
 #include "target_btree_ik_tree.h"
+#include "records.h"
 #include "utest_common.h"
 
 extern btr_ops_t ik_ops;
@@ -26,6 +27,8 @@ void
 tb_init(void)
 {
 	int rc;
+
+	srand(42);
 
 	/* dynamic_flag */
 	rc = dbtree_class_register(IK_TREE_CLASS, BTR_FEAT_EMBED_FIRST | BTR_FEAT_UINT_KEY, &ik_ops);
@@ -112,8 +115,47 @@ tb_open_cmd()
 	assert(rc == 0);
 }
 
-void
-tb_update_cmd()
-{
+#define TB_UPDATE_ENTRIES_MAX 30
 
+void
+tb_update_cmd(uint32_t entries_num)
+{
+	const int use_existing_chance = 30;
+	int idx;
+	d_iov_t	key_iov;
+	d_iov_t	val_iov;
+	int rc;
+
+	if (!daos_handle_is_valid(ik_toh)) {
+		uint64_t blob = rand();
+		d_iov_set(&key_iov, &blob, sizeof(blob));
+		d_iov_set(&val_iov, &blob, sizeof(blob));
+		rc = dbtree_update(ik_toh, &key_iov, &val_iov);
+		assert(rc == -DER_NO_HDL);
+		return;
+	}
+
+	entries_num = entries_num % TB_UPDATE_ENTRIES_MAX + 1;
+
+	for (int i = 0; i < entries_num; ++i) {
+		// if possible give a chance to use an existing key
+		bool use_existing = ((rand() % 100) < use_existing_chance);
+		if (records_used == 0) {
+			use_existing = false;
+		}
+		if (use_existing) {
+			idx = rand() % records_used;
+		} else {
+			idx = record_get_empty();
+			records[idx].key = rand();
+		}
+		// rand a new value
+		value_rand(&records[idx]);
+		// update the tree
+		d_iov_set(&key_iov, &records[idx].key, sizeof(records[idx].key));
+		d_iov_set(&val_iov, records[idx].value,
+			sizeof(char) * records[idx].value_size);
+		rc = dbtree_update(ik_toh, &key_iov, &val_iov);
+		assert(rc == 0);
+	}
 }

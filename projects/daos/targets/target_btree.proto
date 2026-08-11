@@ -25,7 +25,7 @@ message Msg {
   }
 
   message UpdateCmd {
-    uint64 entries_num = 1;
+    uint32 entries_num = 1;
   }
 
   message IterCmd {

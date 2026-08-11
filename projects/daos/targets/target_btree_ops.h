@@ -16,4 +16,7 @@ tb_destroy_cmd(void);
 void
 tb_open_cmd(void);
 
+void
+tb_update_cmd(uint32_t entries_num);
+
 #endif /** TARGET_BTREE_OPS_H */
