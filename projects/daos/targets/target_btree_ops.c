@@ -281,3 +281,45 @@ tb_query_cmd() {
 	rc = dbtree_query(ik_toh, &attr, &stat);
 	assert(rc == rc_exp);
 }
+
+void
+tb_lookup_cmd(uint32_t entries_num) {
+	const int use_random_chance = 20;
+	d_iov_t	key_iov;
+	d_iov_t	val_iov;
+	uint64_t  key;
+	int       idx;
+	int rc;
+	int       rc_exp;
+
+	for (uint32_t i = 0; i < entries_num; ++i) {
+		bool use_random = ((rand() % 100) < use_random_chance);
+		if (records_used == 0 || use_random) {
+			key = rand();
+			if (record_get(key) == NULL) {
+				rc_exp = -DER_NONEXIST;
+				// printf("Lookup for non-existing: %lu\n", key);
+			} else {
+				rc_exp = 0;
+				// printf("Lookup for existing: %lu\n", key);
+			}
+		} else {
+			idx    = rand() % records_used;
+			key    = records[idx].key;
+			rc_exp = 0;
+		}
+		/* overwrite the expected rc set above */
+		if (daos_handle_is_inval(ik_toh)) {
+			rc_exp = -DER_NO_HDL;
+		}
+		d_iov_set(&key_iov, &key, sizeof(key));
+		d_iov_set(&val_iov, NULL, 0); /* get address */
+
+		/* XXX get a value is missing? */
+		rc = dbtree_lookup(ik_toh, &key_iov, &val_iov);
+		assert(rc == rc_exp);
+		if (rc_exp == 0) {
+			record_check(key, (char *)val_iov.iov_buf, val_iov.iov_len);
+		}
+	}
+}

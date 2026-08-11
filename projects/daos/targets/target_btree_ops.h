@@ -23,6 +23,9 @@ void
 tb_iter_cmd(uint32_t entries_num);
 
 void
-tb_query_cmd();
+tb_query_cmd(void);
+
+void
+tb_lookup_cmd(uint32_t entries_num);
 
 #endif /** TARGET_BTREE_OPS_H */
