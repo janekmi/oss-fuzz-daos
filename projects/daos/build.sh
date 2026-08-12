@@ -35,9 +35,5 @@ make \
     ${1:-}
 
 if [ "x${OUT:-}" != "x" ]; then
-    cat > "$OUT/target_btree" << EOF
-#!/bin/bash
-ldconfig -p | grep libprotobuf
-EOF
-    chmod +x "$OUT/target_btree"
+    cp -v target_btree "$OUT"
 fi
