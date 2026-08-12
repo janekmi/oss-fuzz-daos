@@ -21,7 +21,8 @@ DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
 	}
 
 	// Print the number of commands in the input message
-	syslog(LOG_INFO, "Number of commands: %d\n", input.commands_size());
+	tb_clean_check();
+	syslog(LOG_INFO, "--- Number of commands: %d ---", input.commands_size());
 
 	// Loop over messages and print arguments of each of the commands
 	for (int i = 0; i < input.commands_size(); i++) {
@@ -97,4 +98,7 @@ DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
 	}
 
 	tb_cleanup();
+	tb_clean_check();
+
+	syslog(LOG_INFO, "--- End of commands ---");
 }

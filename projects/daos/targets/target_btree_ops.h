@@ -4,6 +4,9 @@
 void
 tb_init(void);
 
+void
+tb_clean_check(void);
+
 /**
  * Cleanup the test environment.
  *

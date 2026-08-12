@@ -51,9 +51,19 @@ tb_init(void)
 }
 
 void
+tb_clean_check(void)
+{
+	assert(present == false);
+	assert(records_used == 0);
+}
+
+void
 tb_cleanup(void)
 {
-	tb_destroy_cmd();
+	if (present) {
+		tb_open_cmd();
+		tb_destroy_cmd();
+	}
 }
 
 void
