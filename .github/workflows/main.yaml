@@ -41,3 +41,6 @@ jobs:
       - name: Build targets (--sanitizer address)
         working-directory: oss-fuzz
         run: sudo python3 infra/helper.py build_fuzzers --sanitizer address daos
+      - name: Check targets
+        working-directory: oss-fuzz
+        run:  sudo python3 infra/helper.py check_build --sanitizer address daos
