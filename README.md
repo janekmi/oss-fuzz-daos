@@ -2,6 +2,10 @@
 
 Test DAOS with OSS-Fuzz.
 
+## Glossary
+
+This repository follows glossary recommended by OSS-Fuzz project and defined by Google [here](https://github.com/google/fuzzing/blob/master/docs/glossary.md).
+
 ## Manual build
 
 OSS-Fuzz builds targets in a Docker container. Please see [main.yaml](.github/workflows/main.yaml) workflow to see an example.
