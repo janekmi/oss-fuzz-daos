@@ -84,9 +84,12 @@ tb_create_cmd(bool feat_uint_key, bool feat_embed_first, bool inplace, uint32_t 
 	if (order == 0){
 		order = IK_ORDER_DEF;
 	}
+	if (order < BTR_ORDER_MIN) {
+		order = BTR_ORDER_MIN;
+	}
 
 	/* If the tree is already there */
-	if (daos_handle_is_valid(ik_toh)) {
+	if (present) {
 		if (ik_inplace != inplace) {
 			return; /* ignore the command */
 		}
