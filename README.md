@@ -1,5 +1,7 @@
 # OSS-Fuzz for DAOS
 
+[![Main](https://github.com/janekmi/oss-fuzz-daos/actions/workflows/main.yaml/badge.svg)](https://github.com/janekmi/oss-fuzz-daos/actions/workflows/main.yaml)
+
 Test DAOS with OSS-Fuzz.
 
 ## Glossary
