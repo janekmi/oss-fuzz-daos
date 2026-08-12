@@ -132,6 +132,7 @@ tb_destroy_cmd()
 	if (rc_exp == 0) {
 		ik_toh = DAOS_HDL_INVAL;
 		present = false;
+		records_used = 0;
 	}
 }
 
