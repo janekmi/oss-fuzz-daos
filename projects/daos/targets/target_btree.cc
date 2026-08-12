@@ -31,8 +31,8 @@ DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
 		switch (cmd.cmd_case()) {
 		case target_btree::Msg_Command::kCreate: {
 			const auto& c = cmd.create();
-			syslog(LOG_INFO, "Create: feat_uint_key=%c feat_embed_first=%c inplace=%c order=%u",
-			       (char)c.feat_uint_key(), (char)c.feat_embed_first(), (char)c.inplace(), c.order());
+			syslog(LOG_INFO, "Create: feat_uint_key=%d feat_embed_first=%d inplace=%d order=%u",
+			       (int)c.feat_uint_key(), (int)c.feat_embed_first(), (int)c.inplace(), c.order());
 			tb_create_cmd(c.feat_uint_key(), c.feat_embed_first(), c.inplace(), c.order());
 			break;
 		}
