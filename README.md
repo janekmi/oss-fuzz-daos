@@ -53,7 +53,7 @@ Running: crash-463fad88b393a04e355dfab23e090639651f3946
 
 **Note**: `crash-*` files (and other input dumps produced by targets) are human-readable. Which makes understanding the crash scenario relatively easy e.g.
 
-```json
+```capnp
 commands {
   create {
     feat_uint_key: true
