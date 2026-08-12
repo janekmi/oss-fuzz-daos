@@ -31,3 +31,7 @@ make \
     LPM_SRC_DIR="$LPM_SRC_DIR" \
     DAOS_SRC_DIR="$DAOS_SRC_DIR" \
     ${1:-}
+
+if [ "x${OUT:-}" != "x" ]; then
+    cp -v target_btree "$OUT"
+fi
