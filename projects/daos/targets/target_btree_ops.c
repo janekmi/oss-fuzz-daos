@@ -75,11 +75,19 @@ tb_create_cmd(bool feat_uint_key, bool feat_embed_first, bool inplace, uint32_t 
 		order = IK_ORDER_DEF;
 	}
 
-	ik_inplace = inplace;
-
 	/* If the tree is already there */
 	if (daos_handle_is_valid(ik_toh)) {
-		rc_exp = -DER_NO_PERM;
+		if (ik_inplace != inplace) {
+			return; /* ignore the command */
+		}
+
+		if (ik_inplace) {
+			rc_exp = -DER_NO_PERM;
+		} else {
+			return; /* dbtree_create() has no safeguards. */
+		}
+	} else {
+		ik_inplace = inplace;
 	}
 
 	if (ik_inplace) {
