@@ -421,7 +421,7 @@ tb_delete_cmd(uint32_t entries_num) {
 void
 tb_drain_cmd(uint32_t credits)
 {
-	int credits_arg = credits;
+	int credits_arg = credits > INT_MAX ? INT_MAX : credits;
 	bool destroyed = false;
 	int rc;
 	int  rc_exp    = 0;
