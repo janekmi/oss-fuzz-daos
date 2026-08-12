@@ -3,7 +3,9 @@ on:
   workflow_dispatch:
   push:
 
-permissions: read-all
+permissions:
+  actions: read
+  contents: read
 
 jobs:
   BatchFuzzing:
