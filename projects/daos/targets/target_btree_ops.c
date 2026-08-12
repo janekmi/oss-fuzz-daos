@@ -439,5 +439,9 @@ tb_drain_cmd(uint32_t credits)
 
 	if (destroyed) {
 		ik_toh = DAOS_HDL_INVAL;
+		present = false;
+		records_used = 0;
 	}
+
+	/** XXX we dont know what records are actually removed and the tree is unusable now  */
 }
