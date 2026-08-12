@@ -266,10 +266,11 @@ tb_iter_cmd(uint32_t entries_num) {
 		return;
 	}
 
+	/* XXX we should also test !BTR_ITER_EMBEDDED */
 	rc = dbtree_iter_prepare(ik_toh, BTR_ITER_EMBEDDED, &ih);
 	assert(rc == 0);
 	if (op_iter_probe_rand(ih) != 0) {
-		return;
+		goto exit;
 	}
 	SET_UCHAR_MAX(entries_num);
 	int  steps_num = entries_num;
@@ -296,7 +297,7 @@ tb_iter_cmd(uint32_t entries_num) {
 			assert(dbtree_iter_delete(ih, NULL) == 0);
 			/* re-probe since after the delete the iterator is not ready */
 			if (op_iter_probe_rand(ih) != 0) {
-				return;
+				goto exit;
 			}
 		}
 		prev = rand() % 2;
@@ -309,10 +310,11 @@ tb_iter_cmd(uint32_t entries_num) {
 		if (rc == -DER_NONEXIST) {
 			/* re-probe since after hitting a non-existing entry the iterator is not ready */
 			if (op_iter_probe_rand(ih) != 0) {
-				return;
+				goto exit;
 			}
 		}
 	}
+exit:
 	dbtree_iter_finish(ih);
 }
 
