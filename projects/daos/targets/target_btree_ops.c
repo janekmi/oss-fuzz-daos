@@ -129,7 +129,7 @@ void
 tb_open_cmd()
 {
 	int rc;
-	int rc_exp = present ? 0 : -DER_INVAL;
+	int rc_exp = 0;
 
 	/* dbtree_open*() has no safeguards. */
 	if (daos_handle_is_valid(ik_toh)) {
@@ -137,8 +137,14 @@ tb_open_cmd()
 	}
 
 	if (ik_inplace) {
+		if (!present) {
+			rc_exp = -DER_NONEXIST;
+		}
 		rc = dbtree_open_inplace(ik_root, ik_uma, &ik_toh);
 	} else {
+		if (!present) {
+			rc_exp = -DER_INVAL;
+		}
 		rc = dbtree_open(ik_root_off, ik_uma, &ik_toh);
 	}
 
