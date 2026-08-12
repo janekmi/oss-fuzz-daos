@@ -25,6 +25,12 @@ static umem_off_t ik_root_off = UMOFF_NULL;
 
 static bool present = false;
 
+#define SET_MAX(val, val_max) \
+	val = (val > val_max) ? val_max : val
+
+#define SET_UCHAR_MAX(val) \
+	SET_MAX(val, UCHAR_MAX)
+
 void
 tb_init(void)
 {
@@ -58,6 +64,7 @@ tb_create_cmd(bool feat_uint_key, bool feat_embed_first, bool inplace, uint32_t 
 		feats += BTR_FEAT_EMBED_FIRST;
 	}
 
+	SET_MAX(order, BTR_ORDER_MAX);
 	if (order == 0){
 		order = IK_ORDER_DEF;
 	}
@@ -124,8 +131,6 @@ tb_open_cmd()
 	assert(rc == rc_exp);
 }
 
-#define TB_UPDATE_ENTRIES_MAX 30
-
 void
 tb_update_cmd(uint32_t entries_num)
 {
@@ -144,7 +149,7 @@ tb_update_cmd(uint32_t entries_num)
 		return;
 	}
 
-	entries_num = entries_num % TB_UPDATE_ENTRIES_MAX + 1;
+	SET_UCHAR_MAX(entries_num);
 
 	for (uint32_t i = 0; i < entries_num; ++i) {
 		// if possible give a chance to use an existing key
@@ -232,6 +237,7 @@ tb_iter_cmd(uint32_t entries_num) {
 	if (op_iter_probe_rand(ih) != 0) {
 		return;
 	}
+	SET_UCHAR_MAX(entries_num);
 	int  steps_num = entries_num;
 	bool prev;
 	for (int i = 0; i < steps_num; ++i) {
@@ -301,6 +307,7 @@ tb_lookup_cmd(uint32_t entries_num) {
 	int rc;
 	int       rc_exp;
 
+	SET_UCHAR_MAX(entries_num);
 	for (uint32_t i = 0; i < entries_num; ++i) {
 		bool use_random = ((rand() % 100) < use_random_chance);
 		if (records_used == 0 || use_random) {
@@ -341,6 +348,7 @@ tb_delete_cmd(uint32_t entries_num) {
 	int rc;
 	int       rc_exp = -1;
 	int       idx    = -1;
+	SET_UCHAR_MAX(entries_num);
 	for (uint32_t i = 0; i < entries_num; ++i) {
 		bool use_random = ((rand() % 100) < use_random_chance);
 		if (records_used == 0 || use_random) {
