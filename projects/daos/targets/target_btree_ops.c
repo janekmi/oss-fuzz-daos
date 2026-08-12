@@ -406,6 +406,10 @@ tb_drain_cmd(uint32_t credits)
 
 	if (daos_handle_is_inval(ik_toh)) {
 		rc_exp = -DER_NO_HDL;
+	} else {
+		if (credits_arg == 0) {
+			rc_exp = -DER_INVAL;
+		}
 	}
 
 	rc = dbtree_drain(ik_toh, &credits_arg, NULL, &destroyed);
