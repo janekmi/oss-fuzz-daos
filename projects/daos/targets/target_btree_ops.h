@@ -4,6 +4,15 @@
 void
 tb_init(void);
 
+/**
+ * Cleanup the test environment.
+ *
+ * Note: It does not cleanup after the tb_init() function, but it resets the state after a sequence of commands.
+ * So, the next round can start clean.
+ */
+void
+tb_cleanup(void);
+
 void
 tb_create_cmd(bool feat_uint_key, bool feat_embed_first, bool inplace, uint32_t order);
 

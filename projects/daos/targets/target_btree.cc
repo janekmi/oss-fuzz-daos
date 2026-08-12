@@ -95,4 +95,6 @@ DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
 			break;
 		}
 	}
+
+	tb_cleanup();
 }
