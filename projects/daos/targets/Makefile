@@ -5,7 +5,7 @@
 #
 
 INCLUDES := -I$(LPM_SRC_DIR) -I$(DAOS_SRC_DIR)/include -I$(DAOS_SRC_DIR)/common/tests
-LDFLAGS := -v -fsanitize=fuzzer -luuid -Wl,-Bstatic -lprotobuf -Wl,-Bdynamic
+LDFLAGS := -v -fsanitize=fuzzer -luuid -lprotobuf
 
 SRCS := target_btree.cc \
         gen/target_btree.pb.cc \

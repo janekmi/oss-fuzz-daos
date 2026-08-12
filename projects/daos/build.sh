@@ -9,6 +9,8 @@
 
 set -euo pipefail
 
+ldconfig -p | grep libprotobuf # XXX debug
+
 cd targets
 
 # generate C++ code from protobuf definitions
