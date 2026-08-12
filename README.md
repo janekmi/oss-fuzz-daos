@@ -20,6 +20,8 @@ git clone --depth 1 --branch janekmi/OSS-Fuzz-ready https://github.com/daos-stac
 cd -
 ```
 
+**Note**: The version of DAOS currently available on official branches do NOT contains all necessary adjustments to build DAOS targets without errors. Please use the branch provided above.
+
 Having that in place you can build DAOS targets as follows:
 
 ```sh
@@ -47,6 +49,32 @@ When the run stops it writes down a scenario which crashed (or stopped for other
 ./targets/target_btree: Running 1 inputs 1 time(s) each.
 Running: crash-463fad88b393a04e355dfab23e090639651f3946
 # ...
+```
+
+**Note**: `crash-*` files (and other input dumps produced by targets) are human-readable. Which makes understanding the crash scenario relatively easy e.g.
+
+```json
+commands {
+  create {
+    feat_uint_key: true
+    feat_embed_first: true
+  }
+}
+commands {
+  update {
+    entries_num: 32768
+  }
+}
+commands {
+  drain {
+    credits_num: 32
+  }
+}
+commands {
+  delete {
+    entries_num: 8
+  }
+}
 ```
 
 ## External resources
