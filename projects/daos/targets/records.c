@@ -17,7 +17,7 @@ struct record *records = NULL;
 
 size_t values_size = 0;
 size_t values_pos = 0;
-char *values = NULL;
+static char *values = NULL;
 
 size_t
 record_get_empty() {
