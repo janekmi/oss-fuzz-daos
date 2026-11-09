@@ -15,15 +15,18 @@
 
 extern btr_ops_t ik_ops;
 
+/** populated on init */
 struct utest_context *ik_utx;
-
 static struct btr_root *ik_root;
 static struct umem_attr *ik_uma;
-static bool ik_inplace;
+
+/** populate on create / open */
 static daos_handle_t ik_toh = DAOS_HDL_INVAL;
 static umem_off_t ik_root_off = UMOFF_NULL;
-
 static bool present = false;
+
+/** irrelevant if the tree does not exist */
+static bool ik_inplace;
 
 #define SET_MAX(val, val_max) \
 	val = (val > val_max) ? val_max : val
@@ -52,6 +55,10 @@ void
 tb_clean_check(void)
 {
 	assert(present == false);
+	assert(daos_handle_is_inval(ik_toh));
+	assert(ik_root_off == UMOFF_NULL);
+
+	/** assert no carry-over of records */
 	assert(records_used == 0);
 }
 
@@ -132,6 +139,7 @@ tb_destroy_cmd()
 	assert(rc == rc_exp);
 	if (rc_exp == 0) {
 		ik_toh = DAOS_HDL_INVAL;
+		ik_root_off = UMOFF_NULL;
 		present = false;
 		records_used = 0;
 	}
@@ -437,6 +445,7 @@ tb_drain_cmd(uint32_t credits)
 
 	if (destroyed) {
 		ik_toh = DAOS_HDL_INVAL;
+		ik_root_off = UMOFF_NULL;
 		present = false;
 		records_used = 0;
 	}
