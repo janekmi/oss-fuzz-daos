@@ -36,8 +36,6 @@ tb_init(void)
 {
 	int rc;
 
-	srand(42);
-
 	/* dynamic_flag */
 	rc = dbtree_class_register(IK_TREE_CLASS, BTR_FEAT_EMBED_FIRST | BTR_FEAT_UINT_KEY, &ik_ops);
 	D_ASSERT(rc == 0);

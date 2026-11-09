@@ -20,6 +20,8 @@ DEFINE_PROTO_FUZZER(const target_btree::Msg& input) {
 		init_done = true;
 	}
 
+	srand(42);
+
 	// Print the number of commands in the input message
 	tb_clean_check();
 	syslog(LOG_INFO, "--- Number of commands: %d ---", input.commands_size());
