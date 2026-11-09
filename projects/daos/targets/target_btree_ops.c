@@ -424,10 +424,12 @@ tb_delete_cmd(uint32_t entries_num) {
 	}
 }
 
+#define BTR_MAX_CREDITS ((1 << 30) - 1)
+
 void
 tb_drain_cmd(uint32_t credits)
 {
-	int credits_arg = credits > INT_MAX ? INT_MAX : credits;
+	int credits_arg = credits > BTR_MAX_CREDITS ? BTR_MAX_CREDITS : credits;
 	bool destroyed = false;
 	int rc;
 	int  rc_exp    = 0;
