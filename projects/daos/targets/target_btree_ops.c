@@ -448,7 +448,7 @@ tb_drain_cmd(uint32_t credits)
 		ik_root_off = UMOFF_NULL;
 		present = false;
 		records_used = 0;
+	} else {
+		tb_destroy_cmd();
 	}
-
-	/** XXX we dont know what records are actually removed and the tree is unusable now  */
 }
