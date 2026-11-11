@@ -18,6 +18,7 @@ struct record {
 
 extern size_t records_used;
 extern struct record *records;
+extern size_t values_pos;
 
 void value_rand(struct record *rec);
 void record_delete(uint64_t key, int idx);

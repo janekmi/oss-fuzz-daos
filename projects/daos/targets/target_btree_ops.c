@@ -60,6 +60,7 @@ tb_clean_check(void)
 
 	/** assert no carry-over of records */
 	assert(records_used == 0);
+	assert(values_pos == 0);
 }
 
 void
@@ -142,6 +143,7 @@ tb_destroy_cmd()
 		ik_root_off = UMOFF_NULL;
 		present = false;
 		records_used = 0;
+		values_pos = 0;
 	}
 }
 
@@ -450,6 +452,7 @@ tb_drain_cmd(uint32_t credits)
 		ik_root_off = UMOFF_NULL;
 		present = false;
 		records_used = 0;
+		values_pos = 0;
 	} else {
 		tb_destroy_cmd();
 	}
