@@ -83,6 +83,14 @@ commands {
 }
 ```
 
+## Command line options
+
+All command line options are listed in the help message:
+
+```sh
+./target_btree -help=1
+```
+
 ## External resources
 
 - https://google.github.io/oss-fuzz/
