@@ -1,3 +1,9 @@
+/**
+ * (C) Copyright 2026 Hewlett Packard Enterprise Development LP
+ *
+ * SPDX-License-Identifier: BSD-2-Clause-Patent
+ */
+
 #ifndef TARGET_BTREE_IK_TREE_H
 #define TARGET_BTREE_IK_TREE_H
 

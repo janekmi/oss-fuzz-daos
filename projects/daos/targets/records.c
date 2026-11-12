@@ -1,3 +1,9 @@
+/**
+ * (C) Copyright 2026 Hewlett Packard Enterprise Development LP
+ *
+ * SPDX-License-Identifier: BSD-2-Clause-Patent
+ */
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>

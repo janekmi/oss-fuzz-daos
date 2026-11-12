@@ -1,8 +1,8 @@
-//
-// Copyright 2026 Hewlett Packard Enterprise Development LP
-//
-// SPDX-License-Identifier: BSD-2-Clause-Patent
-//
+/**
+ * (C) Copyright 2026 Hewlett Packard Enterprise Development LP
+ *
+ * SPDX-License-Identifier: BSD-2-Clause-Patent
+ */
 
 #define D_LOGFAC DD_FAC(tests)
 
