@@ -1,4 +1,5 @@
 crash-*
-slow-unit-*
-oom-*
 fuzz-*.log
+leak-*
+oom-*
+slow-unit-*
