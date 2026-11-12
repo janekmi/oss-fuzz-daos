@@ -7,7 +7,7 @@
 
 set -euo pipefail
 
-# Usage: build_with_sanitizer.sh [address|undefined] [build.sh args...]
+# Usage: build_with_sanitizer.sh [address|undefined|memory|clean]
 SANITIZER=${1:-address}
 if [ $# -gt 0 ]; then
     shift
@@ -21,12 +21,15 @@ undefined)
     # Makefile links with CC; C++ objects need the C++ UBSan runtime.
     SANITIZER_FLAGS="-fsanitize=array-bounds,bool,builtin,enum,function,integer-divide-by-zero,null,object-size,return,returns-nonnull-attribute,shift,signed-integer-overflow,unsigned-integer-overflow,unreachable,vla-bound,vptr -fno-sanitize-recover=array-bounds,bool,builtin,enum,function,integer-divide-by-zero,null,object-size,return,returns-nonnull-attribute,shift,signed-integer-overflow,unreachable,vla-bound,vptr"
     ;;
+memory)
+    SANITIZER_FLAGS="-fsanitize=memory -fsanitize-memory-track-origins"
+    ;;
 clean)
     ./build.sh clean
     exit 0
     ;;
 *)
-    echo "Unsupported sanitizer: $SANITIZER (expected: address, undefined)" >&2
+    echo "Unsupported sanitizer: $SANITIZER (expected: address, undefined, memory)" >&2
     exit 1
     ;;
 esac

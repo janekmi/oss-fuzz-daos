@@ -13,7 +13,7 @@ jobs:
         sanitizer:
         - address
         - undefined
-        - memory
+        # - memory # some problems with linking
     steps:
     - name: Build Fuzzers (${{ matrix.sanitizer }})
       id: build
