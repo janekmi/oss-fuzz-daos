@@ -447,7 +447,7 @@ tb_drain_cmd(uint32_t credits)
 	assert(rc == rc_exp);
 
 	if (destroyed) {
-		ik_toh = DAOS_HDL_INVAL;
+		tb_close_cmd();
 		ik_root_off = UMOFF_NULL;
 		present = false;
 		records_used = 0;
