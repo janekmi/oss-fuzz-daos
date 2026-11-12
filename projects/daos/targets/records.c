@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: BSD-2-Clause-Patent
  */
 
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -25,6 +26,27 @@ size_t values_size = 0;
 size_t values_pos = 0;
 static char *values = NULL;
 
+static uint64_t
+unique_key_rand()
+{
+	uint64_t key;
+	bool unique;
+	
+	do {
+		key = rand();
+		unique = true;
+
+		for (size_t idx = 0; idx < records_used; ++idx) {
+			if (records[idx].key == key) {
+				unique = false;
+				break;
+			}
+		}
+	} while (!unique);
+
+	return key;
+}
+
 size_t
 record_get_empty() {
 	if (records_used == records_total) {
@@ -33,6 +55,8 @@ record_get_empty() {
 		records_total += RECORDS_INCREASE;
 	}
 	records[records_used].value = NULL;
+	records[records_used].key = unique_key_rand();
+
 	return records_used++;
 }
 

@@ -202,7 +202,6 @@ tb_update_cmd(uint32_t entries_num)
 			idx = rand() % records_used;
 		} else {
 			idx = record_get_empty();
-			records[idx].key = rand();
 		}
 		// rand a new value
 		value_rand(&records[idx]);
