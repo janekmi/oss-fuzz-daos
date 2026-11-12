@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: BSD-2-Clause-Patent
  */
 
-#include <cstdio>
-#include <cstring>
 #include <syslog.h>
 #include <src/libfuzzer/libfuzzer_macro.h>
 
