@@ -68,8 +68,7 @@ record_delete(uint64_t key, int idx) {
 		assert(idx != RECORD_IDX_UNKNOWN);
 	}
 	if (idx != records_used - 1) {
-		memcpy(&records[idx], &records[idx + 1],
-			sizeof(struct record) * (records_used - idx - 1));
+		records[idx] = records[records_used - 1];
 	}
 	records_used -= 1;
 }
