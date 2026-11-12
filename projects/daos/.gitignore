@@ -1,2 +1,4 @@
 crash-*
 slow-unit-*
+oom-*
+fuzz-*.log
