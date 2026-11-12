@@ -36,6 +36,13 @@ jobs:
         # storage-repo: https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/OWNER/STORAGE-REPO-NAME.git
         # storage-repo-branch: main   # Optional. Defaults to "main"
         # storage-repo-branch-coverage: gh-pages  # Optional. Defaults to "gh-pages".
+    - name: Checkout OSS-Fuzz-DAOS
+      if: always()
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      with:
+        fetch-depth: 1
+        path: oss-fuzz-daos
+        persist-credentials: false
     - name: Reproduce crashes (${{ matrix.sanitizer }})
       id: reproduce
       if: always()
@@ -43,4 +50,4 @@ jobs:
         SANITIZER: ${{ matrix.sanitizer }}
         # Same image ClusterFuzzLite uses to run fuzzers, so sanitizer runtime and options match.
         IMAGE: gcr.io/oss-fuzz-base/clusterfuzzlite-run-fuzzers:v1
-      run: bash .github/workflows/reproduce_crashes.sh
+      run: bash oss-fuzz-daos/.github/workflows/reproduce_crashes.sh
