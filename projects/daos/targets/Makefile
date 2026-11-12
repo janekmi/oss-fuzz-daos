@@ -5,7 +5,7 @@
 #
 
 INCLUDES := -I$(LPM_SRC_DIR) -I$(DAOS_SRC_DIR)/include -I$(DAOS_SRC_DIR)/common/tests
-LDFLAGS := -v -fsanitize=fuzzer -luuid
+LDFLAGS := -v -fsanitize=fuzzer -fsanitize-link-c++-runtime -luuid
 
 # Some EL9 systems do not provide a static libprotobuf, but Ubuntu used by OSS-Fuzz struggles to find the dynamic one at runtime.
 # So, static version is the default one to make sure the build system works.
