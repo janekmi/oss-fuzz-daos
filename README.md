@@ -91,6 +91,46 @@ All command line options are listed in the help message:
 ./target_btree -help=1
 ```
 
+## Advanced usage
+
+To maintain minute control over the environment the OSS-Fuzz employes Docker images to both build and run targets. As far as, you can start with [basic usage](#basic-usage) some crashes, leaks etc. may be reproducible only in exactly the same environment.
+
+### Prepare repositories
+
+This repository intentionally follows the [google/oss-fuzz](/google/oss-fuzz) repository's directory structure but it does not clone all its contents to keep it lean and DAOS-focused. When you want to investigate more advanced issues you need to combine both this repository and [google/oss-fuzz](/google/oss-fuzz) as follows.
+
+```sh
+cd ~
+mkdir google
+cd google
+git clone https://github.com/google/oss-fuzz
+cd oss-fuzz
+# create a symbolic link for the projects/daos directory in this repository e.g.
+ln -s ~/daos/oss-fuzz-daos/projects/daos projects/daos
+```
+
+### Build image
+
+```sh
+python3 infra/helper.py build_image --no-pull daos
+```
+
+### Build targets
+
+Available sanitizers e.g. address, undefined, ...
+
+```sh
+python3 infra/helper.py build_fuzzers --sanitizer address daos
+```
+
+### Reproduce a problem
+
+**Note**: Make sure you compiled your targets with the sanitizer which discovered the problem.
+
+```sh
+python3 infra/helper.py reproduce daos target_btree projects/daos/targets/crash-d2e5292aa65534ab341793c248d1c1a5ac173201
+```
+
 ## External resources
 
 - https://google.github.io/oss-fuzz/
