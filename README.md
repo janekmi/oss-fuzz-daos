@@ -97,7 +97,7 @@ To maintain minute control over the environment the OSS-Fuzz employes Docker ima
 
 ### Prepare repositories
 
-This repository intentionally follows the [google/oss-fuzz](/google/oss-fuzz) repository's directory structure but it does not clone all its contents to keep it lean and DAOS-focused. When you want to investigate more advanced issues you need to combine both this repository and [google/oss-fuzz](/google/oss-fuzz) as follows.
+This repository intentionally follows the [google/oss-fuzz](https://github.com/google/oss-fuzz) repository's directory structure but it does not clone all its contents to keep it lean and DAOS-focused. When you want to investigate more advanced issues you need to combine both this repository and [google/oss-fuzz](https://github.com/google/oss-fuzz) as follows.
 
 ```sh
 cd ~
